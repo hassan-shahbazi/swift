@@ -17,8 +17,10 @@ case $(uname -s) in
       OS_SUFFIX=ubuntu18.04_x86_64
     elif [ "$(grep RELEASE /etc/lsb-release)" == "DISTRIB_RELEASE=20.04" ]; then
       OS_SUFFIX=ubuntu20.04_x86_64
+    elif [[ "$(grep NAME /etc/os-release)" == *"Amazon"* ]]; then
+      OS_SUFFIX=amazonlinux2
     else
-      echo "Unknown Ubuntu version"
+      echo "Unsupported linux distro"
       exit 1
     fi
     HOST_PRESET=webassembly-linux-host-install
