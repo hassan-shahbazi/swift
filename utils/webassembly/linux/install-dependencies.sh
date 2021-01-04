@@ -24,16 +24,19 @@ elif [ $(grep RELEASE /etc/lsb-release) == "DISTRIB_RELEASE=20.04" ]; then
     libblocksruntime-dev libcurl4-openssl-dev \
     make systemtap-sdt-dev tzdata rsync wget llvm zip unzip
   sudo apt clean
-elif [[ "$(grep NAME /etc/os-release)" == *"Amazon"* ]]; then
-  sudo yum update
-  sudo uum install -y \
-      git ninja-build clang-10 python python-six \
-      uuid-dev libicu-dev icu-devtools libbsd-dev \
-      libedit-dev libxml2-dev libsqlite3-dev swig \
-      libpython-dev libncurses5 libncurses5-dev pkg-config \
-      libblocksruntime-dev libcurl4-openssl-dev \
-      make systemtap-sdt-dev tzdata rsync wget llvm-10 zip unzip
-  sudo yum clean all
+elif [[ "$(grep NAME /etc/os-release)" =~ "Amazon" ]]; then
+  yum update
+  yum groups install -y "Development Tools"
+  yum install -y \
+      sudo libedit-devel libxml2-devel sqlite-devel \
+      ncurses-devel libicu-devel libuuid-devel libcurl-devel \
+      uuid-devel libicu libbsd libuuid libcurl \
+      git ninja-build clang python python-six which \
+      swig tar make tzdata rsync wget zip unzip llvm
+  yum clean all
+
+  ln -sfn /usr/bin/ninja-build /usr/bin/ninja
+  ln -sfn /usr/lib64/libtinfo.so /usr/lib64/libtinfo.so.5
 else
   echo "Unsupported linux distro"
   exit 1
