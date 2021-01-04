@@ -49,8 +49,8 @@ cd $SWIFT_PATH
 ./utils/update-checkout --clone --scheme wasm --skip-repository swift
 
 # Install wasmer
-
-if [ ! -e ~/.wasmer/bin/wasmer ]; then
+# Skip wasmer installation for Amazon Linux https://github.com/wasmerio/wasmer/issues/1970
+if [ ! -e ~/.wasmer/bin/wasmer && ! "$(grep NAME /etc/os-release)" =~ "Amazon" ]; then
   curl https://get.wasmer.io -sSfL | sh
 fi
 

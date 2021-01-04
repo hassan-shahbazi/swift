@@ -40,10 +40,14 @@ echo "Build script completed, will attempt to run test suites..."
 mkdir -p "$TARGET_STDLIB_BUILD_DIR/test-$HOST_SUFFIX"
 
 # Run tests
-$RUN_TEST_BIN --build-dir "$TARGET_STDLIB_BUILD_DIR" --target wasi-wasm32 \
-  "$TARGET_STDLIB_BUILD_DIR/test-wasi-wasm32/stdlib"
-$RUN_TEST_BIN --build-dir "$TARGET_STDLIB_BUILD_DIR" --target wasi-wasm32 \
-  "$TARGET_STDLIB_BUILD_DIR/test-wasi-wasm32/LTO"
+# Skip running tests for Amazon Linux https://github.com/swiftwasm/swift/issues/2318
+if [[ ! $(grep NAME cat /etc/os-release) =~ "Amazon" ]]; then
+  $RUN_TEST_BIN --build-dir "$TARGET_STDLIB_BUILD_DIR" --target wasi-wasm32 \
+    "$TARGET_STDLIB_BUILD_DIR/test-wasi-wasm32/stdlib"
+  $RUN_TEST_BIN --build-dir "$TARGET_STDLIB_BUILD_DIR" --target wasi-wasm32 \
+    "$TARGET_STDLIB_BUILD_DIR/test-wasi-wasm32/LTO"
+fi
+
 
 if [[ "$(uname)" == "Linux" ]]; then
   echo "Skip running all test suites for Linux"
