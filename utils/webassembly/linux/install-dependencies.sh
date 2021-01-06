@@ -32,8 +32,16 @@ elif [[ "$(grep NAME /etc/os-release)" =~ "Amazon" ]]; then
       ncurses-devel libicu-devel libuuid-devel libcurl-devel \
       uuid-devel libicu libbsd libuuid libcurl \
       git ninja-build clang python python-six which \
-      swig tar make tzdata rsync wget zip unzip llvm
+      swig tar make tzdata rsync wget zip unzip llvm \
+      clang-devel clang-libs cpp gcc glibc glibc-all-langpacks \
+      glibc-common glibc-devel glibc-headers isl libgcc \
+      libgomp libmpc libstdc++ libstdc++-devel llvm llvm-devel \
+      llvm-libs mpfr libtool cmake cmake3 re2c uuid-devel binutils \
+      icu python-libs python-devel pkgconfig autoconf automake
   yum clean all
+
+  # python dependencies
+  pip3 install pybombs mako requests numpy pyzmq click-plugins
 
   ln -sfn /usr/bin/ninja-build /usr/bin/ninja
   ln -sfn /usr/lib64/libtinfo.so /usr/lib64/libtinfo.so.5
